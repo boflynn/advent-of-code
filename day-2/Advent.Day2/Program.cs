@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Advent.Day2
@@ -25,20 +26,40 @@ namespace Advent.Day2
 837	80	95	281	652	822	1028	1295	101	1140	88	452	85	444	649	1247";
 
         #endregion
-        
+
         static void Main(string[] args)
         {
             var lines = _input.Split('\n');
             var total = 0;
 
-            foreach(var line in lines)
+            foreach (var line in lines)
             {
                 var numbers = line.Split('\t', StringSplitOptions.RemoveEmptyEntries).Select(n => int.Parse(n));
-                
-                total += (numbers.Max() - numbers.Min());
+
+                total += GetChecksum2(numbers);
             }
 
             Console.WriteLine(total);
+        }
+
+        private static int GetChecksum1(IEnumerable<int> numbers)
+        {
+            return (numbers.Max() - numbers.Min());
+        }
+
+        private static int GetChecksum2(IEnumerable<int> numbers)
+        {
+            foreach (var number in numbers)
+            {
+                var divisor = numbers.SingleOrDefault(n => number != n && number % n == 0);
+
+                if (divisor != 0)
+                {
+                    return number / divisor;
+                }
+            }
+
+            throw new InvalidOperationException("Aww shucks");
         }
     }
 }
