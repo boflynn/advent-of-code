@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Advent2018.Day1
@@ -996,7 +997,8 @@ namespace Advent2018.Day1
 
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+            Part2();
         }
 
         private static void Part1()
@@ -1006,6 +1008,33 @@ namespace Advent2018.Day1
                                 .Sum();
 
             Console.WriteLine(result);
+        }
+
+        private static void Part2()
+        {
+            var foundValues = new HashSet<int>();
+            var inputs = input.Split('\n')
+                    .Select(i => Convert.ToInt32(i));
+            var frequency = 0;
+
+            while (true)
+            {
+                foreach (var i in inputs)
+                {
+                    frequency += i;
+
+                    if (foundValues.Contains(frequency))
+                    {
+                        Console.WriteLine(frequency);
+                        return;
+                    }
+                    else
+                    {
+                        foundValues.Add(frequency);
+                    }
+                }
+            }
+
         }
     }
 }
