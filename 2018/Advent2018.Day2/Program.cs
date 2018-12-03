@@ -259,7 +259,9 @@ efmghuxckqldtwjzvitbparnno";
         #endregion
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+
+            Part2();
         }
 
         private static void Part1()
@@ -272,6 +274,38 @@ efmghuxckqldtwjzvitbparnno";
             var threes = characterInputs.Count(g => g.Any(gg => gg.Count() == 3));
 
             Console.WriteLine(twos * threes);
+        }
+
+        private static void Part2()
+        {
+            var inputs = input.Split('\n').Select(i => i.Trim()).ToList();
+            var inputsLength = inputs.Count;
+            var wordLength = inputs[0].Length;
+
+            for (var i = 0; i < inputsLength; ++i)
+            {
+                for (var j = i + 1; j < inputsLength; ++j)
+                {
+                    var left = inputs[i];
+                    var right = inputs[j];
+                    var commonWord = string.Empty;
+
+                    for (var l = 0; l < wordLength; ++l)
+                    {
+                        if (left[l] == right[l])
+                        {
+                            commonWord += left[l];
+                        }
+                    }
+
+                    if (commonWord.Length == wordLength - 1)
+                    {
+                        System.Console.WriteLine(commonWord);
+                        return;
+                    }
+                }
+            }
+
         }
     }
 }
