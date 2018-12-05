@@ -1346,6 +1346,7 @@ namespace Advent2018.Day3
                                 .Select(i => ParseInput(i));
 
             var board = new int[1000, 1000];
+            var overlapCount = 0;
 
             foreach (var i in inputs)
             {
@@ -1353,20 +1354,12 @@ namespace Advent2018.Day3
                 {
                     for (var y = 0; y < i.Height; ++y)
                     {
+                        if(board[i.LeftPadding + x, i.TopPadding + y] == 1)
+                        {
+                            overlapCount++;
+                        }
+
                         board[i.LeftPadding + x, i.TopPadding + y]++;
-                    }
-                }
-            }
-
-            var overlapCount = 0;
-
-            for (var x = 0; x < 1000; ++x)
-            {
-                for (var y = 0; y < 1000; ++y)
-                {
-                    if (board[x, y] > 1)
-                    {
-                        overlapCount++;
                     }
                 }
             }
