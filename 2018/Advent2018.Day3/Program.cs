@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -1337,7 +1338,8 @@ namespace Advent2018.Day3
         #endregion
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+            Part2();
         }
 
         private static void Part1()
@@ -1354,7 +1356,7 @@ namespace Advent2018.Day3
                 {
                     for (var y = 0; y < i.Height; ++y)
                     {
-                        if(board[i.LeftPadding + x, i.TopPadding + y] == 1)
+                        if (board[i.LeftPadding + x, i.TopPadding + y] == 1)
                         {
                             overlapCount++;
                         }
@@ -1365,6 +1367,51 @@ namespace Advent2018.Day3
             }
 
             Console.WriteLine(overlapCount);
+        }
+
+        private static void Part2()
+        {
+            var inputs = input.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                                .Select(i => ParseInput(i));
+
+            var board = new int[1000, 1000];
+            var ids = new Dictionary<int, bool>();
+
+            foreach (var i in inputs)
+            {
+                for (var x = 0; x < i.Width; ++x)
+                {
+                    for (var y = 0; y < i.Height; ++y)
+                    {
+                        if (board[i.LeftPadding + x, i.TopPadding + y] != 0)
+                        {
+                            // Something already in that part
+                            // That something is not valid, nor am I
+
+                            ids[board[i.LeftPadding + x, i.TopPadding + y]] = false;
+                            if (ids.ContainsKey(i.Id))
+                            {
+                                ids[i.Id] = false;
+                            }
+                            else
+                            {
+                                ids.Add(i.Id, false);
+                            }
+                        }
+                        else
+                        {
+                            board[i.LeftPadding + x, i.TopPadding + y] = i.Id;
+
+                            if (!ids.ContainsKey(i.Id))
+                            {
+                                ids.Add(i.Id, true);
+                            }
+                        }
+                    }
+                }
+            }
+
+            Console.WriteLine(ids.Single(i => i.Value).Value);
         }
 
         private static ParsedInput ParseInput(string line)
