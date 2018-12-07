@@ -9,7 +9,9 @@ namespace Advent2018.Day5
         #endregion
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+
+            Part2();
         }
 
         private static void Part1()
@@ -17,6 +19,26 @@ namespace Advent2018.Day5
             var result = ReactPolymer(input);
 
             Console.WriteLine(result.Length);
+        }
+
+        private static void Part2()
+        {
+            var letters = "abcdefghijklmnopqrstuvwxyz";
+
+            var shortest = int.MaxValue;
+
+            foreach (var l in letters)
+            {
+                var cleaned = input.Replace(l.ToString(), string.Empty).Replace(char.ToUpper(l).ToString(), string.Empty);
+                var result = ReactPolymer(cleaned);
+
+                if (result.Length < shortest)
+                {
+                    shortest = result.Length;
+                }
+            }
+
+            Console.WriteLine(shortest);
         }
 
         private static string ReactPolymer(string input)
