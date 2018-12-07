@@ -1088,10 +1088,55 @@ namespace Advent2018.Day4
 
         static void Main(string[] args)
         {
-            Part1();
+            // Part1();
+            Part2();
         }
 
         private static void Part1()
+        {
+            var minutes = GetGuardMinutes();
+
+            var sleepiestGuard = minutes.OrderByDescending(m => m.Value.Sum()).First();
+            var worstMinute = 0;
+
+            for (var i = 1; i < 60; ++i)
+            {
+                if (sleepiestGuard.Value[i] > sleepiestGuard.Value[worstMinute])
+                {
+                    worstMinute = i;
+                }
+            }
+
+            Console.WriteLine(worstMinute * sleepiestGuard.Key);
+        }
+
+        private static void Part2()
+        {
+            var guardMinutes = GetGuardMinutes();
+
+            var sleepiestGuardId = 0;
+            var worstMinute = 0;
+            var worstMinuteIndex = 0;
+
+            foreach (var guard in guardMinutes)
+            {
+                var minutes = guard.Value;
+
+                for (var i = 1; i < 60; ++i)
+                {
+                    if (minutes[i] > worstMinute)
+                    {
+                        sleepiestGuardId = guard.Key;
+                        worstMinute = minutes[i];
+                        worstMinuteIndex = i;
+                    }
+                }
+            }
+
+            Console.WriteLine(worstMinuteIndex * sleepiestGuardId);
+        }
+
+        private static Dictionary<int, int[]> GetGuardMinutes()
         {
             var inputs = input.Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                               .OrderBy(i => i);
@@ -1131,18 +1176,7 @@ namespace Advent2018.Day4
                 }
             }
 
-            var sleepiestGuard = minutes.OrderByDescending(m => m.Value.Sum()).First();
-            var worstMinute = 0;
-
-            for (var i = 1; i < 60; ++i)
-            {
-                if (sleepiestGuard.Value[i] > sleepiestGuard.Value[worstMinute])
-                {
-                    worstMinute = i;
-                }
-            }
-
-            Console.WriteLine(worstMinute * sleepiestGuard.Key);
+            return minutes;
         }
 
         private static int GetGuardId(string line)
